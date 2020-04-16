@@ -119,13 +119,51 @@ function ref {
 
 function lscol($numCol) 
 {
-  if ($numCol -eq $null) 
+  if ($numCol) 
   {
-    ls | Sort-Object | Format-Wide       
+    ls | Sort-Object | Format-Wide -Column $numCol       
   }
   else 
   {
-    ls | Sort-Object | Format-Wide -Column $numCol
+    ls | Sort-Object | Format-Wide
+  }
+}
+
+function comp {
+  start $myComp;
+}
+
+function htdocs {
+  start $htdocs;
+}
+
+function gfSize {
+[CmdletBinding()]
+Param (
+[Parameter(Mandatory=$true,ValueFromPipeline=$true)]
+$Path,
+[ValidateSet("KB","MB","GB")]
+$Units = "GB"
+)
+  if ( (Test-Path $Path) -and (Get-Item $Path).PSIsContainer ) {
+    $Measure = Get-ChildItem $Path -Recurse -Force -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum
+    $Sum = $Measure.Sum / "1$Units"
+    [PSCustomObject]@{
+      "Path" = $Path
+      "Size($Units)" = $Sum
+    }
+  }
+}
+
+function getSizes ($path, $units) {
+  if ($path) {
+    $files = gci $path    
+  }
+  else {
+    $files = gci "."
+  }
+  foreach ($f in $files) {
+    gfSize $f.FullName $units
   }
 }
 
