@@ -12,6 +12,14 @@ $vscode = "C:\Users\chris\AppData\Local\Programs\Microsoft VS Code\Code.exe";
 $brackets = "C:\Program Files (x86)\Brackets\Brackets.exe"
 $bmark = "$code\php\bmark"
 $setReadlineColor = "Set-PSReadLineOption -Colors @{ String = 'white' }"
+$powerdir = "C:\Users\chris\Documents\WindowsPowerShell\"
+$killexcel = "taskkill /f /im excel.exe"
+
+function setReadlineColor() 
+{
+    & Set-PSReadLineOption -Colors @{ String = 'white' }
+}
+setReadlineColor
 
 function bmark($cat = "BS4", $name = "headings (huge font, super small font, etc...)", $url = "https://www.w3schools.in/bootstrap4/typography/")
 {
@@ -668,16 +676,7 @@ function createWorkbook($filepath)
     $workbook.SaveAs($FilePath)
 }
 
-function migExcel($catname, $catnum)
-{
-    # Specify the path to the Excel file and the WorkSheet Name
-    $FilePath_1 = "C:\Users\chris\Desktop\migAssets\$catname" + "Content.xlsx"
-    $FilePath_2 = "C:\Users\chris\Desktop\migAssets\$catnum" + "Content.xlsx"
-    $filepaths = @($FilePath_1,$FilePath_2)
-
-    foreach ($file in $FilePaths)
-    {
-        createWorkbook($file)
-    }
-
+function gitlog() {
+  & git log --oneline
 }
+function addtoPowershellProfile($val) {& add-content -Path $PROFILE -Value $val}
